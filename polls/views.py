@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from polls.models import Poll,Choice
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.views import generic
 # Create your views here.
 
 def index(request):
@@ -29,3 +30,18 @@ def vote(request,poll_id):
         selected_choice.votes += 1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results',args=(p.id,)))
+    
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "latest_poll_list"
+    
+    def get_queryset(self):
+        return Poll.objects.all().order_by('-pub_date')[:5]
+    
+class DetailView(generic.DeleteView):
+    template_name = "polls/detail.html"
+    model = Poll
+    
+class ResultsView(generic.DeleteView):
+    template_name = "polls/results.html"
+    model = Poll
