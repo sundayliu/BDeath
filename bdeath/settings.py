@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'polls',
     'todo',
     'bdcalendar',
+    'blog',
 )
 
 MIDDLEWARE_CLASSES = (
